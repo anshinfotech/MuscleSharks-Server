@@ -16,6 +16,7 @@ const offerRouter = require("./routes/offerRouter");
 const Razorpay = require("razorpay");
 
 dbConnection();
+// app.use(express.static(path.resolve(__dirname, "dist")));
 
 app.use(
   cors({
@@ -23,10 +24,26 @@ app.use(
     origin: "https://muscle-sharks-client.vercel.app/",
   })
 );
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://muscle-sharks-client.vercel.app/"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
 
 app.use(cookieParser());
 app.use(express.json());
 
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "dist", "index.html"));
+// });
 
 app.use("/api", userRouter);
 app.use("/api", productRoutes);
