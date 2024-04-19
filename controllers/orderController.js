@@ -3,9 +3,9 @@ const nodemailer = require("nodemailer");
 const productModel = require("../model/productModel");
 const orderModel = require("../model/orderModel");
 const userModel = require("../model/userModel");
-// const axios = require("axios");
-// const uniqid = require("uniqid");
-// const sha256 = require("sha256");
+const axios = require("axios");
+const uniqid = require("uniqid");
+const sha256 = require("sha256");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
