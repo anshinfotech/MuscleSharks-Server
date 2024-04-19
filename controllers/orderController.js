@@ -127,7 +127,7 @@ const makeAnOrderOnline = async (req, res) => {
       merchantTransactionId: MERCHANT_TRANSACTION_ID, // Assuming you have uniqid function defined
       merchantUserId: userId,
       amount: totalprice * 100,
-      //   redirectUrl: `https://musclesharks.in/user-orders`,
+        redirectUrl: `https://www.musclesharks.in/user-orders`,
       redirectMode: "POST",
       mobileNumber: contact,
       paymentInstrument: {
@@ -163,10 +163,7 @@ const makeAnOrderOnline = async (req, res) => {
         console.log("response->", JSON.stringify(response.data));
         // Assuming response.data contains information about the payment success
         if (response.data.success) {
-          res.json({
-            success: true,
-            paymentUrl: response.data.data.instrumentResponse.redirectInfo.url,
-          });
+          res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
         } else {
           res.json({ success: false, message: "Payment failed." });
         }
