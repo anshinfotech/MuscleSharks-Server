@@ -21,13 +21,13 @@ dbConnection();
 app.use(
   cors({
     credentials: true,
-    origin: "https://musclesharks.in",
+    origin: "https://www.musclesharks.in",
   })
 );
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://musclesharks.in"
+    "https://www.musclesharks.in"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
