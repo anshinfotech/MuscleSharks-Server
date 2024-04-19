@@ -370,8 +370,8 @@ const getAllOrdersOfUser = async (req, res) => {
 
 
 module.exports = {
-  // makeAnOrder,
-  makeAnOrderOnline,
+  makeAnOrder,
+  // makeAnOrderOnline,
   statusUpdate,
   cancelOrder,
   deleteOrder,
