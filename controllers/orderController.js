@@ -163,7 +163,10 @@ const makeAnOrderOnline = async (req, res) => {
         console.log("response->", JSON.stringify(response.data));
         // Assuming response.data contains information about the payment success
         if (response.data.success) {
-          res.redirect(response.data.data.instrumentResponse.redirectInfo.url)
+          res.json({
+            success: true,
+            paymentUrl: response.data.data.instrumentResponse.redirectInfo.url,
+          });
         } else {
           res.json({ success: false, message: "Payment failed." });
         }
