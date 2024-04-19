@@ -77,125 +77,125 @@ const makeAnOrder = async (req, res) => {
   }
 };
 
-// const PHONE_PE_HOST_URL = "https://api.phonepe.com/apis/hermes";
+const PHONE_PE_HOST_URL = "https://api.phonepe.com/apis/hermes";
 
-// // Update merchant ID and production API key value
-// const MERCHANT_ID = "M22CSXVDKSOIZ";
-// const SALT_KEY = "825f0f15-a845-4aca-9b75-20de68dc2683";
-// const SALT_INDEX = 1;
-// const MERCHANT_TRANSACTION_ID = uniqid();
+// Update merchant ID and production API key value
+const MERCHANT_ID = "M22CSXVDKSOIZ";
+const SALT_KEY = "825f0f15-a845-4aca-9b75-20de68dc2683";
+const SALT_INDEX = 1;
+const MERCHANT_TRANSACTION_ID = uniqid();
 
-// const makeAnOrderOnline = async (req, res) => {
-//   try {
-//     const userId = req.user.userId;
-//     const payEndpoint = "/pg/v1/pay";
-//     const { userName, shippingAddress, products, totalprice, contact } =
-//       req.body;
+const makeAnOrderOnline = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const payEndpoint = "/pg/v1/pay";
+    const { userName, shippingAddress, products, totalprice, contact } =
+      req.body;
 
-//     // Iterate over products to prepare data
-//     const productsWithVariants = [];
-//     for (const productData of products) {
-//       const { productId, variantId, quantity, productName } = productData;
-//       const product = await productModel.findById(productId);
+    // Iterate over products to prepare data
+    const productsWithVariants = [];
+    for (const productData of products) {
+      const { productId, variantId, quantity, productName } = productData;
+      const product = await productModel.findById(productId);
 
-//       if (!product) {
-//         return res.status(400).send({
-//           success: false,
-//           error: `Product with ID ${productId} not found.`,
-//         });
-//       }
+      if (!product) {
+        return res.status(400).send({
+          success: false,
+          error: `Product with ID ${productId} not found.`,
+        });
+      }
 
-//       const productPrice =
-//         product.variants.reduce((total, variant) => total + variant.price, 0) *
-//         quantity;
+      const productPrice =
+        product.variants.reduce((total, variant) => total + variant.price, 0) *
+        quantity;
 
-//       const productVariants = [];
-//       productVariants.push({ variantId, quantity });
+      const productVariants = [];
+      productVariants.push({ variantId, quantity });
 
-//       productsWithVariants.push({
-//         productName,
-//         productId,
-//         variants: productVariants,
-//         quantity,
-//         price: productPrice,
-//       });
-//     }
+      productsWithVariants.push({
+        productName,
+        productId,
+        variants: productVariants,
+        quantity,
+        price: productPrice,
+      });
+    }
 
-//     // Prepare payload for PhonePe API
-//     const payload = {
-//       merchantId: MERCHANT_ID,
-//       merchantTransactionId: MERCHANT_TRANSACTION_ID, // Assuming you have uniqid function defined
-//       merchantUserId: userId,
-//       amount: totalprice * 100,
-//       //   redirectUrl: `https://musclesharks.in/user-orders`,
-//       redirectMode: "POST",
-//       mobileNumber: contact,
-//       paymentInstrument: {
-//         type: "PAY_PAGE",
-//       },
-//     };
+    // Prepare payload for PhonePe API
+    const payload = {
+      merchantId: MERCHANT_ID,
+      merchantTransactionId: MERCHANT_TRANSACTION_ID, // Assuming you have uniqid function defined
+      merchantUserId: userId,
+      amount: totalprice * 100,
+      //   redirectUrl: `https://musclesharks.in/user-orders`,
+      redirectMode: "POST",
+      mobileNumber: contact,
+      paymentInstrument: {
+        type: "PAY_PAGE",
+      },
+    };
 
-//     // Convert payload to base64
-//     const bufferObj = Buffer.from(JSON.stringify(payload), "utf-8");
-//     const base64EncodedPayload = bufferObj.toString("base64");
+    // Convert payload to base64
+    const bufferObj = Buffer.from(JSON.stringify(payload), "utf-8");
+    const base64EncodedPayload = bufferObj.toString("base64");
 
-//     // Calculate X-VERIFY header
-//     const string = base64EncodedPayload + payEndpoint + SALT_KEY;
-//     const sha256_val = sha256(string);
-//     const xVerifyChecksum = sha256_val + "###" + SALT_INDEX;
+    // Calculate X-VERIFY header
+    const string = base64EncodedPayload + payEndpoint + SALT_KEY;
+    const sha256_val = sha256(string);
+    const xVerifyChecksum = sha256_val + "###" + SALT_INDEX;
 
-//     // Configure options for PhonePe API request
-//     axios
-//       .post(
-//         PHONE_PE_HOST_URL + payEndpoint,
-//         {
-//           request: base64EncodedPayload,
-//         },
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//             "X-VERIFY": xVerifyChecksum,
-//             accept: "application/json",
-//           },
-//         }
-//       )
-//       .then(function (response) {
-//         console.log("response->", JSON.stringify(response.data));
-//         // Assuming response.data contains information about the payment success
-//         if (response.data.success) {
-//           res.json({
-//             success: true,
-//             paymentUrl: response.data.data.instrumentResponse.redirectInfo.url,
-//           });
-//         } else {
-//           res.json({ success: false, message: "Payment failed." });
-//         }
-//       })
-//       .catch(function (error) {
-//         console.error(
-//           "PhonePe API Error:",
-//           error.response ? error.response.data : error.message
-//         );
-//         res.status(500).send("Internal Server Error");
-//       });
+    // Configure options for PhonePe API request
+    axios
+      .post(
+        PHONE_PE_HOST_URL + payEndpoint,
+        {
+          request: base64EncodedPayload,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-VERIFY": xVerifyChecksum,
+            accept: "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log("response->", JSON.stringify(response.data));
+        // Assuming response.data contains information about the payment success
+        if (response.data.success) {
+          res.json({
+            success: true,
+            paymentUrl: response.data.data.instrumentResponse.redirectInfo.url,
+          });
+        } else {
+          res.json({ success: false, message: "Payment failed." });
+        }
+      })
+      .catch(function (error) {
+        console.error(
+          "PhonePe API Error:",
+          error.response ? error.response.data : error.message
+        );
+        res.status(500).send("Internal Server Error");
+      });
 
-//     // If payment is successful, create the order
-//     const newOrder = new orderModel({
-//       user: userId,
-//       shippingAddress,
-//       userName,
-//       products: productsWithVariants,
-//       totalprice,
-//       orderType: "Online Payment",
-//     });
+    // If payment is successful, create the order
+    const newOrder = new orderModel({
+      user: userId,
+      shippingAddress,
+      userName,
+      products: productsWithVariants,
+      totalprice,
+      orderType: "Online Payment",
+    });
 
-//     const ordered = await newOrder.save();
-//     console.log("Order placed:", ordered);
-//   } catch (error) {
-//     console.error("Error placing order online:", error);
-//     res.status(500).send({ success: false, error: error.message });
-//   }
-// };
+    const ordered = await newOrder.save();
+    console.log("Order placed:", ordered);
+  } catch (error) {
+    console.error("Error placing order online:", error);
+    res.status(500).send({ success: false, error: error.message });
+  }
+};
 
 const statusUpdate = async (req, res) => {
   const { orderId } = req.params;
@@ -371,7 +371,7 @@ const getAllOrdersOfUser = async (req, res) => {
 
 module.exports = {
   makeAnOrder,
-  // makeAnOrderOnline,
+  makeAnOrderOnline,
   statusUpdate,
   cancelOrder,
   deleteOrder,
