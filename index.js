@@ -21,13 +21,13 @@ dbConnection();
 app.use(
   cors({
     credentials: true,
-    origin: "https://muscle-sharks-client.vercel.app/",
+    origin: "https://muscle-sharks-client.vercel.app",
   })
 );
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://muscle-sharks-client.vercel.app/"
+    "https://muscle-sharks-client.vercel.app"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
