@@ -11,39 +11,32 @@ const orderRouter = require("./routes/orderRouter");
 const couponRouter = require("./routes/couponRouter");
 const cartRouter = require("./routes/cartRouter");
 const adminRouter = require("./routes/adminRouter");
-const paymentRouter = require("./routes/paymentRoute");
 const offerRouter = require("./routes/offerRouter");
-const Razorpay = require("razorpay");
 
 dbConnection();
-// app.use(express.static(path.resolve(__dirname, "dist")));
-
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://www.musclesharks.in",
-  })
-);
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://www.musclesharks.in"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "https://www.musclesharks.in",
+//   })
+// );
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://www.musclesharks.in"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.setHeader("Access-Control-Allow-Credentials", true);
+//   next();
+// });
 
 app.use(cookieParser());
 app.use(express.json());
 
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "dist", "index.html"));
-// });
 
 app.use("/api", userRouter);
 app.use("/api", productRoutes);
@@ -51,7 +44,6 @@ app.use("/api", cartRouter);
 app.use("/api", orderRouter);
 app.use("/api", adminRouter);
 app.use("/api", couponRouter);
-app.use("/api", paymentRouter);
 app.use("/api", offerRouter);
 
 app.get("/", (req, res) => {
